@@ -1,0 +1,45 @@
+{
+  "roc_auc": 0.8398742888865997,
+  "average_precision": 0.64408428917456,
+  "test_samples": 4079,
+  "train_samples": 16314,
+  "scale_pos_weight": 2.3334695545565998,
+  "feature_importance": [
+    {
+      "feature": "global_frequency",
+      "importance": 0.40838858485221863
+    },
+    {
+      "feature": "neighbor_diversity",
+      "importance": 0.09440530836582184
+    },
+    {
+      "feature": "presence_ratio",
+      "importance": 0.08613657206296921
+    },
+    {
+      "feature": "std_similarity",
+      "importance": 0.07974746078252792
+    },
+    {
+      "feature": "max_similarity",
+      "importance": 0.07293102890253067
+    },
+    {
+      "feature": "avg_similarity",
+      "importance": 0.0697946548461914
+    },
+    {
+      "feature": "avg_position",
+      "importance": 0.06571325659751892
+    },
+    {
+      "feature": "top1_similarity",
+      "importance": 0.061790723353624344
+    },
+    {
+      "feature": "frequency",
+      "importance": 0.061092376708984375
+    }
+  ]
+}

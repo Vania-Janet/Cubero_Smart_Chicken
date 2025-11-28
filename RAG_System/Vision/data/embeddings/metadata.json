@@ -1,0 +1,8 @@
+{
+  "model_name": "ViT-B-32",
+  "embedding_dim": 512,
+  "num_images": 57056,
+  "device": "cuda",
+  "batch_size": 32,
+  "generated_at": "2025-11-25T22:02:35.163856"
+}
