@@ -1,0 +1,96 @@
+# Configuración del Módulo de Visión Computacional
+
+dataset:
+  image_size: 224
+  num_workers: 5  # Ajustado para i7-11370H (4 cores, 8 threads)
+  pin_memory: true
+
+  splits:
+    train: 0.8
+    val: 0.1
+    test: 0.1
+    random_state: 42
+
+  augmentation:
+    train:
+      resize: 260
+      crop_size: 224
+      horizontal_flip_prob: 0.5  # Aumentado de 0.3 a 0.5
+      rotation_degrees: 20  # Activado para más variedad
+      color_jitter:
+        brightness: 0.3  # Aumentado para más robustez
+        contrast: 0.3    # Aumentado
+        saturation: 0.3  # Aumentado
+        hue: 0.1         # Aumentado
+
+    val_test:
+      resize: 256
+      center_crop: 224
+
+  normalization:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+model:
+  architecture: "mobilenetv3_large_100"  # MobileNetV3-Large para deployment mobile
+  pretrained: true
+  freeze_layers: 0.5  # Freeze first 50% (más capas entrenables para 57k imágenes)
+  dropout: 0.4  # Aumentado para prevenir overfitting
+
+  # Configuración de predicción de ingredientes
+  num_labels: 150  # Top-150 ingredientes más frecuentes (ajustar según vocab generado)
+  head_hidden_dim: 512
+  threshold: 0.6  # Threshold por defecto para predicciones (ajustable con validation)
+
+training:
+
+  batch_size: 32  # Reducido a 32 para RTX 3050 Ti (4GB VRAM) + 8GB RAM
+  epochs: 60  # Aumentado de 30 a 60 para mejor convergencia
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+
+  optimizer: "Adam"
+  scheduler:
+    type: "CosineAnnealingLR"
+    T_max: 60  # Actualizado para epochs=60
+    eta_min: 0.000001
+
+  loss: "BCEWithLogitsLoss"  # Multi-label binary cross entropy
+  use_pos_weight: true  # Usar class weighting para balanceo
+
+  early_stopping:
+    patience: 5
+    min_delta: 0.001
+    monitor: "val_loss"
+
+  device: "cuda"  # Options: cuda, cpu
+  mixed_precision: true
+
+evaluation:
+  # Métricas para predicción multi-label de ingredientes
+  metrics:
+    - "hamming_loss"      # Fracción de labels incorrectos
+    - "f1_macro"          # F1 promedio sobre todos los ingredientes
+    - "f1_micro"          # F1 global
+    - "f1_samples"        # F1 promedio sobre todas las muestras
+    - "precision_macro"   # Precision promedio
+    - "recall_macro"      # Recall promedio
+    - "subset_accuracy"   # Exact match (todas las labels correctas)
+
+  # Evaluar múltiples thresholds para encontrar el óptimo
+  thresholds_to_eval: [0.3, 0.4, 0.5, 0.6, 0.7]
+
+  # Top-K prediction metrics
+  precision_at_k: [3, 5, 10]
+  recall_at_k: [3, 5, 10]
+
+checkpointing:
+  save_dir: "models/ingredient_prediction"
+  save_best_only: true
+  monitor: "val_f1_macro"  # Monitorear F1-macro para balancear precision y recall
+  mode: "max"
+
+logging:
+  log_interval: 50
+  save_predictions: true
+  num_visualization_samples: 10

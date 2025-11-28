@@ -1,0 +1,98 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+appComida/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.claude/
+
+# Docker
+docker/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Data
+# EXCLUSIÓN ESPECÍFICA
+data/raw/mm_food_100k/
+
+# Permitimos foodcom explícitamente
+!data/raw/foodcom/
+
+# Ignorar data procesada u otros datsets pesados
+data/processed/*.parquet
+data/processed/*.npz
+data/processed/*.pkl
+data/splits/*.csv
+*.csv
+*.parquet
+
+# Models
+models/**/*.pth
+models/**/*.pkl
+models/**/*.npz
+models/**/*.h5
+models/**/*.ckpt
+!models/.gitkeep
+
+# Logs
+*.log
+logs/
+*.out
+
+# Reports
+reports/figures/*.png
+reports/figures/*.jpg
+reports/metrics/*.csv
+reports/metrics/*.json
+
+# Environment
+.env
+.env.local
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+tmp/
+temp/
+
+# Large files
+*.zip
+*.tar.gz
+*.7z

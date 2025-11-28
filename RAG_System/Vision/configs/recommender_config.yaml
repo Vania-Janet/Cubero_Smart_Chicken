@@ -1,0 +1,57 @@
+# Configuración del Sistema de Recomendación
+
+preprocessing:
+  min_interactions_per_user: 5
+  min_interactions_per_recipe: 10
+  ingredient_min_df: 2
+  ingredient_max_df: 0.95
+
+content_based:
+  vectorizer:
+    type: "tfidf"
+    max_features: 5000
+    ngram_range: [1, 2]
+    min_df: 2
+    max_df: 0.95
+    sublinear_tf: true
+
+  similarity:
+    metric: "cosine"
+    threshold: 0.3
+
+collaborative:
+  model_type: "SVD"  # Options: SVD, NMF
+  n_factors: 100
+  n_epochs: 20
+  lr_all: 0.01
+  reg_all: 0.05
+  random_state: 42
+
+hybrid:
+  weights:
+    content: 0.5
+    collaborative: 0.3
+    popularity: 0.2
+
+  popularity:
+    rating_weight: 0.7
+    count_weight: 0.3
+    min_ratings_threshold: 10
+
+evaluation:
+  k_values: [5, 10, 20]
+  test_size: 0.2
+  validation_size: 0.1
+  random_state: 42
+
+  metrics:
+    - "precision"
+    - "recall"
+    - "ndcg"
+    - "hit_rate"
+    - "coverage"
+
+training:
+  save_dir: "models/recommender"
+  log_interval: 100
+  verbose: true

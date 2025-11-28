@@ -1,0 +1,23 @@
+# Configuración del sistema de predicción de ingredientes
+# Pipeline: Image Retrieval (CLIP + FAISS) + ML Scoring (XGBoost)
+
+# Rutas de archivos
+faiss_index_path: "data/embeddings/faiss_index.bin"
+metadata_path: "data/processed/mm_food_metadata.csv"
+scoring_model_path: "models/ingredient_scoring/xgboost_model.json"
+embeddings_path: "data/embeddings/clip_embeddings.npy"
+
+# Configuración del modelo CLIP
+clip_model: "ViT-B-32"
+device: "cpu"  # Changed for Docker/Render deployment (portable)
+
+# Parámetros de K adaptativo (Configuración ganadora - ROC-AUC: 0.8410)
+min_k: 10              # Aumentado para obtener más candidatos
+max_k: 30              # Límite superior óptimo
+similarity_threshold: 0.60  # Threshold más estricto para mejor calidad
+
+# Threshold de predicción
+prediction_threshold: 0.5
+
+# Configuración de búsqueda
+initial_k_search: 50
